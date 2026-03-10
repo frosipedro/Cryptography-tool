@@ -19,6 +19,7 @@ import struct
 from pathlib import Path
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey, RSAPrivateKey
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
@@ -87,18 +88,24 @@ class RSAHandler(CryptoHandler):
     # ── Loaders ────────────────────────────────────────────────────
 
     @staticmethod
-    def load_private_key(path: Path, passphrase: str = ''):
+    def load_private_key(path: Path, passphrase: str = '') -> RSAPrivateKey:
         pwd = passphrase.encode() if passphrase else None
-        return serialization.load_pem_private_key(path.read_bytes(), password=pwd)
+        key = serialization.load_pem_private_key(path.read_bytes(), password=pwd)
+        if not isinstance(key, RSAPrivateKey):
+            raise TypeError('A chave privada fornecida não é uma chave RSA.')
+        return key
 
     @staticmethod
-    def load_public_key(path: Path):
-        return serialization.load_pem_public_key(path.read_bytes())
+    def load_public_key(path: Path) -> RSAPublicKey:
+        key = serialization.load_pem_public_key(path.read_bytes())
+        if not isinstance(key, RSAPublicKey):
+            raise TypeError('A chave pública fornecida não é uma chave RSA.')
+        return key
 
     # ── Encrypt ────────────────────────────────────────────────────
 
-    def encrypt_file(self, src: Path, dst: Path,
-                     public_key_path: Path, **_) -> dict:
+    def encrypt_file(self, src: Path, dst: Path, **kwargs) -> dict:
+        public_key_path: Path = kwargs['public_key_path']
         plaintext   = self._read(src)
         public_key  = self.load_public_key(public_key_path)
 
@@ -134,9 +141,9 @@ class RSAHandler(CryptoHandler):
 
     # ── Decrypt ────────────────────────────────────────────────────
 
-    def decrypt_file(self, src: Path, dst: Path,
-                     private_key_path: Path,
-                     passphrase: str = '', **_) -> None:
+    def decrypt_file(self, src: Path, dst: Path, **kwargs) -> None:
+        private_key_path: Path = kwargs['private_key_path']
+        passphrase: str = kwargs.get('passphrase', '')
         blob = self._read(src)
 
         magic_len = len(MAGIC)

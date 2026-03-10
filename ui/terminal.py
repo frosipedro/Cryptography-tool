@@ -152,8 +152,8 @@ def progress(label: str, iterable=None, total: int = 30):
 def spinner(label: str, func, *args, **kwargs):
     """Executa func enquanto exibe um spinner."""
     frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-    result = [None]
-    exc    = [None]
+    result: list = [None]
+    exc: list = [None]
     done   = [False]
 
     import threading
@@ -183,7 +183,7 @@ def spinner(label: str, func, *args, **kwargs):
 
 # ─────────────────────────── TABELA ────────────────────────────────
 
-def table(headers: list[str], rows: list[list[str]], col_colors: list = None):
+def table(headers: list[str], rows: list[list[str]], col_colors: list | None = None):
     widths = [len(h) for h in headers]
     for row in rows:
         for i, cell in enumerate(row):

@@ -396,8 +396,4 @@ def main():
 
 
 if __name__ == '__main__':
-    if '--terminal' in sys.argv:
-        main()
-    else:
-        from ui.gui import run as run_gui
-        run_gui()
+    main()

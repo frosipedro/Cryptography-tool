@@ -39,7 +39,7 @@ def _list_dir(directory: Path) -> tuple[list[Path], list[Path]]:
     return dirs, files
 
 
-def browse_file(start_dir: Path = None, title: str = 'Selecionar Arquivo') -> Path | None:
+def browse_file(start_dir: Path | None = None, title: str = 'Selecionar Arquivo') -> Path | None:
     """
     Navegador interativo de arquivos no terminal.
     Retorna o Path do arquivo selecionado ou None se o usuário cancelar.

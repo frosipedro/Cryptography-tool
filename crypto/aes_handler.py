@@ -9,7 +9,6 @@ O GCM fornece confidencialidade + autenticidade (não precisa de HMAC separado).
 """
 
 import os
-import struct
 from pathlib import Path
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -58,9 +57,10 @@ class AESHandler(CryptoHandler):
 
     # ── Encrypt ────────────────────────────────────────────────────
 
-    def encrypt_file(self, src: Path, dst: Path, password: str, **_) -> dict:
+    def encrypt_file(self, src: Path, dst: Path, **kwargs) -> dict:
         plaintext = self._read(src)
 
+        password = kwargs.get('password', '')
         salt  = os.urandom(SALT_LEN)
         nonce = os.urandom(NONCE_LEN)
         key   = _derive_key(password, salt)
@@ -85,9 +85,10 @@ class AESHandler(CryptoHandler):
 
     # ── Decrypt ────────────────────────────────────────────────────
 
-    def decrypt_file(self, src: Path, dst: Path, password: str, **_) -> None:
+    def decrypt_file(self, src: Path, dst: Path, **kwargs) -> None:
         blob = self._read(src)
 
+        password = kwargs.get('password', '')
         magic_len = len(MAGIC)
         if blob[:magic_len] != MAGIC:
             raise ValueError('Arquivo não é um arquivo AES-256-GCM válido.')

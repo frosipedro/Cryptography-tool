@@ -70,7 +70,8 @@ class DESHandler(CryptoHandler):
 
     # ── Encrypt ────────────────────────────────────────────────────
 
-    def encrypt_file(self, src: Path, dst: Path, password: str, **_) -> dict:
+    def encrypt_file(self, src: Path, dst: Path, **_) -> dict:
+        password: str = _['password']
         plaintext = self._read(src)
 
         salt = os.urandom(SALT_LEN)
@@ -98,7 +99,8 @@ class DESHandler(CryptoHandler):
 
     # ── Decrypt ────────────────────────────────────────────────────
 
-    def decrypt_file(self, src: Path, dst: Path, password: str, **_) -> None:
+    def decrypt_file(self, src: Path, dst: Path, **_) -> None:
+        password: str = _['password']
         blob = self._read(src)
 
         magic_len = len(MAGIC)
