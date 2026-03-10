@@ -2,10 +2,13 @@
 """
 CryptoFile v1.0 — Criptografia e descriptografia de arquivos.
 Suporta: AES-256-GCM · 3DES-CBC · RSA-2048 (híbrido)
+
+Uso:
+    python main.py          # abre a interface gráfica (padrão)
+    python main.py --cli    # usa a interface de terminal
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Garante que o diretório raiz está no sys.path
@@ -14,13 +17,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 from crypto import REGISTRY
 from crypto.rsa_handler import RSAHandler
 from ui.terminal import (
-    C, header, menu, ask, ask_password, confirm, ok, error, info, warn,
-    blank, divider, section, section_end, section_row, table, press_enter,
+    C, header, menu, ask, ask_password, confirm, error, info, warn,
+    blank, section, section_end, section_row, press_enter,
     spinner, clear,
 )
 from utils.file_utils import (
     browse_file, suggest_output_path, suggest_decrypt_path,
-    file_info, validate_input_file, human_size,
+    file_info, human_size,
 )
 
 # ── Diretório padrão de chaves RSA ──────────────────────────────────
@@ -157,9 +160,9 @@ def flow_encrypt():
 
 def _detect_handler(src: Path):
     """Tenta detectar o algoritmo pelo magic bytes do arquivo."""
-    from crypto.aes_handler import AESHandler, MAGIC as AES_MAGIC
-    from crypto.des_handler import DESHandler, MAGIC as DES_MAGIC
-    from crypto.rsa_handler import RSAHandler, MAGIC as RSA_MAGIC
+    from crypto.aes_handler import MAGIC as AES_MAGIC
+    from crypto.des_handler import MAGIC as DES_MAGIC
+    from crypto.rsa_handler import MAGIC as RSA_MAGIC
 
     try:
         with open(src, 'rb') as f:
@@ -396,4 +399,19 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if '--cli' in sys.argv:
+        try:
+            main()
+        except KeyboardInterrupt:
+            clear()
+            info('Até logo! 👋')
+            blank()
+            sys.exit(0)
+    else:
+        try:
+            from ui.gui import run
+            run()
+        except ImportError:
+            error('customtkinter não instalado. Instale com: pip install customtkinter')
+            info('Ou use o modo terminal: python main.py --cli')
+            sys.exit(1)

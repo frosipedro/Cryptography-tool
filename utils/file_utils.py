@@ -1,9 +1,8 @@
 """
 Utilitários de arquivo: navegação de diretórios, seleção interativa, info.
 """
-import os
 from pathlib import Path
-from ui.terminal import C, ask, warn, ok, info, blank, divider, section, section_end, section_row
+from ui.terminal import C, ask, warn, section, section_end, section_row
 
 
 # ─────────────────────────── INFO ──────────────────────────────────
