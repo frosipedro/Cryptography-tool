@@ -1,69 +1,69 @@
 # 🔐 CryptoFile v1.0
 
-**CryptoFile** é uma ferramenta de criptografia e descriptografia de arquivos desenvolvida em Python. O projeto oferece suporte a três algoritmos amplamente reconhecidos — AES-256-GCM, 3DES-CBC e RSA-2048 —, sendo acessível tanto por uma interface gráfica moderna (GUI) quanto por uma interface de terminal (CLI). O objetivo é fornecer uma solução simples, segura e flexível para proteger arquivos locais, adequada tanto para uso pessoal quanto para fins educacionais e técnicos.
+**CryptoFile** is a file encryption and decryption tool developed in Python. The project supports three widely recognized algorithms — AES-256-GCM, 3DES-CBC, and RSA-2048 — and is accessible through both a modern graphical interface (GUI) and a terminal interface (CLI). The goal is to provide a simple, secure, and flexible solution for protecting local files, suitable for personal use as well as educational and technical purposes.
 
 ---
 
-## 📋 Índice
+## 📋 Table of Contents
 
-- [Funcionalidades](#-funcionalidades)
-- [Algoritmos Suportados](#-algoritmos-suportados)
-- [Pré-requisitos](#-pré-requisitos)
-- [Instalação](#-instalação)
-- [Como Usar](#-como-usar)
-  - [Interface Gráfica (GUI)](#interface-gráfica-gui)
-  - [Interface de Terminal (CLI)](#interface-de-terminal-cli)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Detalhes Técnicos](#-detalhes-técnicos)
+- [Features](#-features)
+- [Supported Algorithms](#-supported-algorithms)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [How to Use](#-how-to-use)
+  - [Graphical Interface (GUI)](#graphical-interface-gui)
+  - [Terminal Interface (CLI)](#terminal-interface-cli)
+- [Project Structure](#-project-structure)
+- [Technical Details](#-technical-details)
   - [AES-256-GCM](#aes-256-gcm)
   - [3DES-CBC](#3des-cbc)
   - [RSA-2048](#rsa-2048)
-- [Gerenciamento de Chaves RSA](#-gerenciamento-de-chaves-rsa)
-- [Segurança](#-segurança)
-- [Licença](#-licença)
+- [RSA Key Management](#-rsa-key-management)
+- [Security](#-security)
+- [License](#-license)
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Features
 
-- **Criptografia e descriptografia** de qualquer tipo de arquivo
-- **3 algoritmos disponíveis:** AES-256-GCM, 3DES-CBC e RSA-2048 (híbrido)
-- **Detecção automática** do algoritmo usado ao descriptografar
-- **Interface gráfica** moderna com tema escuro (Material Design 3) via `customtkinter`
-- **Interface de terminal** totalmente funcional com navegador de arquivos interativo
-- **Derivação segura de chaves** via PBKDF2-HMAC-SHA256
-- **Geração e gerenciamento** de pares de chaves RSA-2048 (.pem)
-- **Autenticação de integridade** nos arquivos cifrados (GCM tag / HMAC-SHA256)
-
----
-
-## 🔑 Algoritmos Suportados
-
-| Algoritmo   | Tipo        | Chave                         | Indicado para                            |
-| ----------- | ----------- | ----------------------------- | ---------------------------------------- |
-| AES-256-GCM | Simétrico   | Senha (PBKDF2, 600k iter.)    | Uso geral — rápido, seguro e autenticado |
-| 3DES-CBC    | Simétrico   | Senha (PBKDF2, 300k iter.)    | Compatibilidade com sistemas legados     |
-| RSA-2048    | Assimétrico | Par de chaves pública/privada | Troca segura de arquivos entre partes    |
+- **Encryption and decryption** of any file type
+- **3 available algorithms:** AES-256-GCM, 3DES-CBC, and RSA-2048 (hybrid)
+- **Automatic detection** of the algorithm used during decryption
+- **Modern graphical interface** with dark theme (Material Design 3) via `customtkinter`
+- **Fully functional terminal interface** with an interactive file browser
+- **Secure key derivation** via PBKDF2-HMAC-SHA256
+- **Generation and management** of RSA-2048 key pairs (.pem)
+- **Integrity authentication** on encrypted files (GCM tag / HMAC-SHA256)
 
 ---
 
-## 🖥️ Pré-requisitos
+## 🔑 Supported Algorithms
 
-- Python **3.10** ou superior
+| Algorithm   | Type         | Key                            | Recommended for                              |
+| ----------- | ------------ | ------------------------------ | -------------------------------------------- |
+| AES-256-GCM | Symmetric    | Password (PBKDF2, 600k iters.) | General use — fast, secure, and authenticated |
+| 3DES-CBC    | Symmetric    | Password (PBKDF2, 300k iters.) | Compatibility with legacy systems            |
+| RSA-2048    | Asymmetric   | Public/private key pair        | Secure file exchange between parties         |
+
+---
+
+## 🖥️ Prerequisites
+
+- Python **3.10** or higher
 - pip
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-**1. Clone o repositório:**
+**1. Clone the repository:**
 
 ```bash
-git clone https://github.com/seu-usuario/cryptography-tool.git
+git clone https://github.com/your-username/cryptography-tool.git
 cd cryptography-tool
 ```
 
-**2. Crie e ative um ambiente virtual (recomendado):**
+**2. Create and activate a virtual environment (recommended):**
 
 ```bash
 python -m venv .venv
@@ -75,95 +75,95 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-**3. Instale as dependências:**
+**3. Install dependencies:**
 
 ```bash
 pip install cryptography
-pip install customtkinter   # opcional — apenas para a GUI
+pip install customtkinter   # optional — only required for the GUI
 ```
 
 ---
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-### Interface Gráfica (GUI)
+### Graphical Interface (GUI)
 
-Execute sem argumentos para abrir a interface gráfica:
+Run without arguments to open the graphical interface:
 
 ```bash
 python main.py
 ```
 
-> **Requisito:** `customtkinter` instalado. Caso não esteja, o programa exibirá uma mensagem orientando a instalação ou o uso do modo CLI.
+> **Requirement:** `customtkinter` must be installed. If it is not, the program will display a message guiding you to install it or use CLI mode.
 
-A GUI é organizada em quatro abas:
+The GUI is organized into four tabs:
 
-| Aba             | Descrição                                              |
-| --------------- | ------------------------------------------------------ |
-| Criptografar    | Seleciona arquivo, algoritmo e senha/chave para cifrar |
-| Descriptografar | Seleciona arquivo cifrado e fornece credenciais        |
-| Chaves RSA      | Gera e lista pares de chaves RSA-2048 (.pem)           |
-| Sobre           | Informações sobre os algoritmos e recomendações        |
+| Tab          | Description                                                   |
+| ------------ | ------------------------------------------------------------- |
+| Encrypt      | Select a file, algorithm, and password/key to encrypt         |
+| Decrypt      | Select an encrypted file and provide credentials              |
+| RSA Keys     | Generate and list RSA-2048 key pairs (.pem)                   |
+| About        | Information about the algorithms and recommendations          |
 
 ---
 
-### Interface de Terminal (CLI)
+### Terminal Interface (CLI)
 
-Para usar o modo terminal:
+To use terminal mode:
 
 ```bash
 python main.py --cli
 ```
 
-Você navegará por menus interativos:
+You will navigate through interactive menus:
 
 ```
-[1]  Criptografar arquivo
-[2]  Descriptografar arquivo
-[3]  Gerenciar chaves RSA
-[4]  Sobre os algoritmos
-[0]  Sair
+[1]  Encrypt file
+[2]  Decrypt file
+[3]  Manage RSA keys
+[4]  About the algorithms
+[0]  Exit
 ```
 
-**Interrompendo a execução:** pressione `Ctrl+C` a qualquer momento para sair com segurança.
+**Interrupting execution:** press `Ctrl+C` at any time to exit safely.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 cryptography-tool/
 │
-├── main.py                  # Ponto de entrada — GUI ou CLI
+├── main.py                  # Entry point — GUI or CLI
 │
 ├── crypto/
-│   ├── __init__.py          # Registro central de handlers
-│   ├── base.py              # Classe abstrata CryptoHandler
-│   ├── aes_handler.py       # Implementação AES-256-GCM
-│   ├── des_handler.py       # Implementação 3DES-CBC
-│   └── rsa_handler.py       # Implementação RSA-2048 (híbrido)
+│   ├── __init__.py          # Central handler registry
+│   ├── base.py              # Abstract CryptoHandler class
+│   ├── aes_handler.py       # AES-256-GCM implementation
+│   ├── des_handler.py       # 3DES-CBC implementation
+│   └── rsa_handler.py       # RSA-2048 (hybrid) implementation
 │
 ├── ui/
-│   ├── gui.py               # Interface gráfica (customtkinter)
-│   └── terminal.py          # Interface de terminal (ANSI/CLI)
+│   ├── gui.py               # Graphical interface (customtkinter)
+│   └── terminal.py          # Terminal interface (ANSI/CLI)
 │
 ├── utils/
-│   └── file_utils.py        # Utilitários de arquivo e navegador CLI
+│   └── file_utils.py        # File utilities and CLI file browser
 │
-├── requirements.txt         # (recomendado criar — veja abaixo)
+├── requirements.txt         # (recommended to create — see below)
 ├── LICENSE
 └── README.md
 ```
 
 ---
 
-## 🔬 Detalhes Técnicos
+## 🔬 Technical Details
 
 ### AES-256-GCM
 
-Algoritmo simétrico autenticado. A chave é derivada da senha usando PBKDF2-HMAC-SHA256 com 600.000 iterações. O modo GCM garante simultaneamente **confidencialidade** e **autenticidade**, dispensando HMAC externo.
+Authenticated symmetric algorithm. The key is derived from the password using PBKDF2-HMAC-SHA256 with 600,000 iterations. GCM mode simultaneously ensures **confidentiality** and **authenticity**, eliminating the need for an external HMAC.
 
-**Formato do arquivo cifrado:**
+**Encrypted file format:**
 
 ```
 [MAGIC 9b] [SALT 16b] [NONCE 12b] [TAG 16b] [CIPHERTEXT]
@@ -173,27 +173,27 @@ Algoritmo simétrico autenticado. A chave é derivada da senha usando PBKDF2-HMA
 
 ### 3DES-CBC
 
-Algoritmo simétrico legado (TripleDES). A chave de 24 bytes é derivada com PBKDF2-HMAC-SHA256 (300.000 iterações). A integridade é verificada via **HMAC-SHA256** sobre o ciphertext.
+Legacy symmetric algorithm (TripleDES). The 24-byte key is derived using PBKDF2-HMAC-SHA256 (300,000 iterations). Integrity is verified via **HMAC-SHA256** over the ciphertext.
 
-**Formato do arquivo cifrado:**
+**Encrypted file format:**
 
 ```
 [MAGIC 9b] [SALT 16b] [IV 8b] [HMAC 32b] [CIPHERTEXT (PKCS7)]
 ```
 
-> ⚠️ Use 3DES apenas quando houver necessidade de compatibilidade com sistemas legados. Para novos projetos, prefira AES-256-GCM.
+> ⚠️ Use 3DES only when compatibility with legacy systems is required. For new projects, prefer AES-256-GCM.
 
 ---
 
 ### RSA-2048
 
-Como RSA não é adequado para cifrar dados grandes diretamente, é utilizado um esquema **híbrido**:
+Since RSA is not suitable for directly encrypting large data, a **hybrid** scheme is used:
 
-1. Uma chave de sessão AES-256 aleatória é gerada
-2. O arquivo é cifrado com AES-256-GCM usando essa chave
-3. A chave de sessão é cifrada com a **chave pública RSA** (OAEP + SHA-256)
+1. A random AES-256 session key is generated
+2. The file is encrypted with AES-256-GCM using that key
+3. The session key is encrypted with the **RSA public key** (OAEP + SHA-256)
 
-**Formato do arquivo cifrado:**
+**Encrypted file format:**
 
 ```
 [MAGIC 9b] [ENC_KEY_LEN 4b] [ENC_SESSION_KEY] [NONCE 12b] [TAG 16b] [CIPHERTEXT]
@@ -201,51 +201,47 @@ Como RSA não é adequado para cifrar dados grandes diretamente, é utilizado um
 
 ---
 
-## 🗝️ Gerenciamento de Chaves RSA
+## 🗝️ RSA Key Management
 
-As chaves RSA são armazenadas no formato PEM e ficam salvas por padrão em:
+RSA keys are stored in PEM format and saved by default at:
 
 ```
 ~/.cryptofile/keys/
 ```
 
-**Para gerar um novo par de chaves:**
+**To generate a new key pair:**
 
-- **GUI:** acesse a aba _Chaves RSA_ e preencha o formulário
-- **CLI:** selecione a opção `[3] Gerenciar chaves RSA` → `[1] Gerar novo par`
+- **GUI:** go to the _RSA Keys_ tab and fill in the form
+- **CLI:** select option `[3] Manage RSA keys` → `[1] Generate new pair`
 
-Dois arquivos serão criados:
+Two files will be created:
 
 ```
-<nome>_private.pem   ← chave privada (protegida por senha opcional)
-<nome>_public.pem    ← chave pública (pode ser compartilhada)
+<name>_private.pem   ← private key (optionally password-protected)
+<name>_public.pem    ← public key (can be shared freely)
 ```
 
-> ⚠️ **Guarde a chave privada em local seguro.** Sem ela, não é possível descriptografar os arquivos cifrados com a chave pública correspondente.
+> ⚠️ **Keep your private key in a safe place.** Without it, it is not possible to decrypt files encrypted with the corresponding public key.
 
 ---
 
-## 🛡️ Segurança
+## 🛡️ Security
 
-- Toda derivação de chave usa **PBKDF2-HMAC-SHA256** com alto número de iterações para dificultar ataques de força bruta
-- O modo **AES-256-GCM** autentica o ciphertext — qualquer adulteração é detectada na descriptografia
-- O **3DES-CBC** utiliza HMAC-SHA256 separado para verificação de integridade
-- O esquema RSA usa **OAEP com SHA-256**, que é resistente a ataques de texto cifrado escolhido
-- Senhas nunca são armazenadas — apenas o salt derivado é salvo no arquivo cifrado
-
----
-
-## 📄 Licença
-
-Distribuído sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-```
-Copyright (c) 2026 Pedro Rockenbach Frosi
-```
+- All key derivation uses **PBKDF2-HMAC-SHA256** with a high iteration count to resist brute-force attacks
+- **AES-256-GCM** mode authenticates the ciphertext — any tampering is detected during decryption
+- **3DES-CBC** uses a separate HMAC-SHA256 for integrity verification
+- The RSA scheme uses **OAEP with SHA-256**, which is resistant to chosen-ciphertext attacks
+- Passwords are never stored — only the derived salt is saved in the encrypted file
 
 ---
 
-## Créditos
+## 📄 License
+
+Distributed under the **MIT** license. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## Credits
 
 - Cristian dos Santos Siquiera — https://github.com/CristianSSiqueira
 - Pedro Rockenbach Frosi — https://github.com/frosipedro
